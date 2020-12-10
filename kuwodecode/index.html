@@ -1,0 +1,119 @@
+﻿<!doctype html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>酷我音乐解析</title>
+
+<style type="text/css">
+
+.wrap{
+	
+/*margin表示外边距*/
+	
+margin-top: 100px;
+	
+width: 500px;
+	
+height: 500px;
+	
+/*background-color: #ccc; */
+	
+margin-left: 500px;
+
+}	
+
+.input{
+	
+width: 250px;
+	
+height: 40px;
+	
+margin-top: 50px;
+	
+margin-left: 30px;
+
+}
+
+.logC{
+	
+margin-left: 100px;
+	
+width: 60%;
+	
+height: 45px;
+	
+background-color: #ee7700;
+	
+color: white;
+	
+font-size: 18px;
+	
+margin-top: 50px;
+
+}
+
+.regist{
+	
+margin-top: 20px;
+	
+float: right;
+	
+margin-right: 100px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+	
+<!-- class用于style中控制div样式，也可以直接改为style="",将属性写在style中 -->
+	
+<div class="wrap">
+		
+<!-- from是一个表单，点击提交按钮时可以将输入框内容提交到action后的页面，method表示servelet请求方式 -->
+		
+<form action="#" method="post">
+		
+<div style="margin-left: 50px;">	
+<!-- br表示换行 -->
+		
+<br>	
+		
+<div style="margin-left: 50px;">
+		
+<b>请在酷我音乐搜索，并把ID复制到下面:</b>
+		
+<input class="input" type="text" name="password" id="password" placeholder="输入ID" />
+		
+</div >
+		
+<br>
+		
+<!-- submit表示提交按钮 -->
+		
+<input class="logC" type="submit" name="login" id="login" value="确定">
+
+		
+</form>
+		
+</div>
+
+</div>
+<script src="jquery-3.3.1.js"></script>
+<script Language="javascript">
+$(function(){
+	$("#login").click(function(){
+		var pwd=$("#password").val();
+		window.open("http://antiserver.kuwo.cn/anti.s?useless=&format=mp3&rid=MUSIC_"+pwd+"&response=res&type=convert_url&")
+	})
+})
+</script>
+</body>
+
+</html>
