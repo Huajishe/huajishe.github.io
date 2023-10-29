@@ -1,0 +1,77 @@
+<!DOCHTML>
+<head>
+<meta charset="utf-8">
+<title>滑稽社闹钟</title>
+</head>
+<body>
+<h3>现在时间：</h3><p id="demo"></p>
+<script>
+var myVar = setInterval(myTimer, 1000);
+ function myTimer() {
+    var d = new Date();
+    document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+}
+</script>
+<br>
+<br>
+<video></video>
+<iframe allow="autoplay" style="display:none" src="一个空的音频文件"></iframe> 
+
+
+
+<script type="text/javascript">
+	function sleep(delay) {
+    var start = (new Date()).getTime();
+    while ((new Date()).getTime() - start < delay) {
+        continue;
+    }
+    function beginplay() {
+    	var myAuto1 = document.getElementById('start');
+    	myAuto1.play();
+	}
+	function endplay() {
+    	var myAuto2 = document.getElementById('end');
+    	myAuto2.play();
+	}
+}
+</script>
+
+<script type="text/javascript">
+function jiexi()
+  {
+  	//const sleep = (delay) => new Promise((resolve) => setTimeout(resolve,delay))
+  	var t=prompt("请输入自习时间（单位：分钟）","40")
+  	var s=prompt("请输入休息时间（单位：分钟）","10")
+  	var p=prompt("请输入循环次数","5")
+  	if (t!=null && t!="" && s!=null && s!="")
+    	{
+    		sleep(500);
+    		alert("已设置好，请点击确定以开始计时（每次弹窗后都要点击确定才能进行下一步）")
+    		for (var i = 1; i <= p; i++) {
+				sleep(1000);
+				//beginplay();
+				begin();
+				
+				sleep(t*60*1000);
+				//endplay();
+				end();
+
+				sleep(s*60*1000);
+    		}
+    		
+
+    	}
+  }
+  function begin(){
+  	alert("开始上课！")
+  }
+  function end(){
+  	alert("结束，下课！")
+  }
+  
+</script>
+<input type="button" onclick="jiexi()" value="设置时间" />
+
+
+</body>
+</html>

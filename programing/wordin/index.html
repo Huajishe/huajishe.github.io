@@ -1,0 +1,218 @@
+﻿<html>
+<head>
+    <title>文字解密</title>
+        <link href="index.css" rel="stylesheet">
+        <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="ie10-viewport-bug-workaround.css" rel="stylesheet">
+   
+</head>
+<body>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 margintb-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">前段文本：</span>
+                    <textarea type="text" class="form-control" id="plaintext_before" placeholder="输入前段文本"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 margintb-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">加密文本：</span>
+                    <textarea type="text" class="form-control" id="incodes" placeholder="输入加密文本"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 margintb-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">后段文本：</span>
+                    <textarea type="text" class="form-control" id="plaintext_after" placeholder="输入后段文本"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-sm-offset-5 margintb-6">
+                <button class="btn btn-primary width-100-percent" id="ok" onclick="handleIncode();">加密</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 margintb-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">粘贴密文：</span>
+                    <textarea type="text" class="form-control" id="will_decode" placeholder="粘贴密文"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-2 col-sm-offset-5 margintb-6">
+                <button class="btn btn-primary width-100-percent" id="decode" onclick="handleDecode();">解密</button>
+            </div>
+        </div>
+        <div class="row" id="panel-result-bmr">
+                <div class="col-xs-12 margintb-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">密文</div>
+                        <div class="panel-body">
+                            <p id="string" onclick="copyCodes();">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="panel-result-bmr">
+                    <div class="col-xs-12 margintb-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">明文</div>
+                            <div class="panel-body">
+                                <p id="outcodes" style="word-wrap:break-word;">
+                                    
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <script>
+        const morseWords = ['.-','-...','-.-.','-..','.','..-.','--.','....','..','.---','-.-','.-..','--','-.','---','.--.','--.-','.-.','...','-','..-','...-','.--','-..-','-.--','--..']
+        const morseNumber = ['-----','.----','..---','...--','....-','.....','-....','--...','---..','----.']
+        let wordsToMorse = {};
+        let morseToWords = {};
+        let morseToNum = {};
+
+        //a-z数组
+        let words = [];
+        for (let i = 10; i < 36; i++) {
+            let j = i.toString(36);
+            words.push(j);
+        }
+
+        //数字加密字典
+        let numToMorse = morseNumber;
+        //字母加密字典
+        for (let i in words) {
+            wordsToMorse[words[i]] = morseWords[i];
+        }
+        //字母解密字典
+        for (let i in wordsToMorse) {
+            morseToWords[wordsToMorse[i]] = i;
+        }
+        //数字解密字典
+        for (let i in morseNumber){
+            morseToNum[morseNumber[i]]=i;
+        }
+        //合并字典
+        let decodeWords = Object.assign(morseToWords, morseToNum);
+        /* 附件字符 */
+        decodeWords['-...-'] = ' ';
+        decodeWords[".--.-"] = "\\";
+        wordsToMorse["\\"] = ".--.-";
+
+        // 加密
+        function incode(str,textBefore,textAfter) {
+            let res = [];
+            let l = "&#8205;";
+            let s = "&#8204;";
+            let q = "&#8203;";
+            for (let i in str) {
+                let val = str[i];
+                if(val === ' '){
+                    res.push('-...-')
+                } else if (!!parseInt(val) || parseInt(val) == 0) {
+                res.push(numToMorse[str[i]]);
+                } else {
+                res.push(wordsToMorse[str[i]]);
+                }
+            } 
+            let encrypt = res.join("/");
+            encrypt = encrypt.replace(/\//g, q)
+            encrypt = encrypt.replace(/\./g, s)
+            encrypt = encrypt.replace(/\-/g, l)
+            return textBefore + encrypt + textAfter;
+        }
+
+        // 解密
+        function decode(text) {
+            let decode = [];
+
+            text.match(/(\&\#8203\;|\&\#8204\;|\&\#8205\;|\u200B|\u200C|\u200D|\&zwnj\;|\&zwj\;)+/g).map(temp => {
+                temp = temp.replace(/\&\#8203\;|\u200B/g, "/");
+                temp = temp.replace(/\&\#8204\;|\u200C|\&zwnj\;/g, ".");
+                temp = temp.replace(/\&\#8205\;|\u200D|\&zwj\;/g, "-");
+                let arr = temp.split("/");
+
+                for (let i in arr) {
+                    decode.push(decodeWords[arr[i]]);
+                }
+            })
+            
+            return decode;
+        }
+
+ 
+        function handleIncode() {
+            let code_value = document.getElementById("incodes").value;
+            let ch_Z = code_value.match(/[\u4e00-\u9fa5]+/g)
+            // console.log(154,ch_Z);
+            let incodes = code_value;
+            if (ch_Z) {
+                incodes = incodes.replace(/[\u4e00-\u9fa5]/g, function (t) {
+                    return '\\u' + parseInt(t.charCodeAt(0), 10).toString(16)
+                })
+                console.log(160,incodes);
+            }
+
+            let code = incode(incodes, document.getElementById("plaintext_before").value, document.getElementById("plaintext_after").value);
+            // console.log(165,code);
+            let html = '';
+            document.getElementById("outcodes").innerHTML = html;
+            for (let i in code) {
+                setTimeout(() => {
+                    // html += code[i]
+                    document.getElementById("outcodes").innerHTML += code[i]
+                }, 5 * i);
+            }
+            document.getElementById("string").innerHTML = code;
+        }
+
+        function handleDecode() {
+            let code = decode(document.getElementById("will_decode").value);
+            let outcodes = code.join('');
+            // console.log(code, outcodes);
+
+            outcodes = outcodes.replace(/\\u[0-9a-z]{4}/g, (t) => {
+
+                return String.fromCharCode(parseInt(t.replace('\\u', ''), 16))
+            })
+            // console.log(outcodes);
+
+            document.getElementById("outcodes").innerHTML = outcodes;
+        }
+
+        function copyCodes(){
+            copyToClipboard('string');
+        }
+
+        function copyToClipboard(elementId) {
+            // 创建元素用于复制
+            var aux = document.createElement("input");
+            // 获取复制内容
+            var content = document.getElementById(elementId).innerHTML || document.getElementById(elementId).value;
+            // 设置元素内容
+            aux.setAttribute("value", content);
+            // 将元素插入页面进行调用
+            document.body.appendChild(aux);
+            // 复制内容
+            aux.select();
+            // 将内容复制到剪贴板
+            document.execCommand("copy");
+            // 删除创建元素
+            document.body.removeChild(aux);
+            //提示
+            alert("已复制到剪贴板");
+        }
+
+    </script>
+</body>
+</html>  
