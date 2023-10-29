@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<head>
+<title>滑稽社解析</title>
+</head>
+<body>
+<script type="text/javascript">
+    function jiexi()
+  {
+  //nb解析，没挂
+  var t=prompt("请直接输入解析歌曲id，切勿直接复制网址。使用前请务必查看免责声明，一旦使用即视为同意该声明","27403811")
+
+  if (t!=null && t!="")
+
+    {
+
+    window.location.href='https://music.163.com/song/media/outer/url?id='+t;
+
+    }
+  }
+  function jiexi2()
+  {
+
+  var t=prompt("请直接输入解析歌曲id，切勿直接复制网址。使用前请务必查看免责声明，一旦使用即视为同意该声明","264376")
+
+  if (t!=null && t!="")
+
+    {
+
+    window.location.href='http://antiserver.kuwo.cn/anti.s?useless=&format=mp3&rid=MUSIC_'+t+'&response=res&type=convert_url&';
+
+    }
+  }
+  
+</script>
+<input type="button" onclick="jiexi()" value="网易云音乐解析（无法解析付费歌曲）" />
+<input type="button" onclick="jiexi2()" value="酷我音乐解析（所有音乐均可解析）" />
+<h3><a href="/statement">【必看】免责声明</a></h3>
+<div style="position:fixed; bottom:0px; width:100%; text-align:center;"><a href="/statement"><b>点击此处查看免责声明</b></a>——邮箱：huajishe@gmail.com</div>
+</body>
